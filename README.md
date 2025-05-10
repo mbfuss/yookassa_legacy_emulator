@@ -73,7 +73,8 @@
   "formUrl": "http://localhost:8080/payment/rest/payments?orderId=550e8400-e29b-41d4-a716-446655440000"
 }
 ```
-
+C устаревшим API ЮKassa возможно ознакомиться по ссылке:
+[устаревшее API ЮKassa](https://yoomoney.ru/i/forms/yc-program-interface-api-sberbank.pdf).
 ## Лицензия
 
 Проект распространяется под лицензией MIT.
