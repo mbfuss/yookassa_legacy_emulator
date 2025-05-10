@@ -52,10 +52,14 @@ func (p *Parser) Parse(req *http.Request) error {
 	}
 
 	p.RequestPayload.TaxSystem = parserData["taxSystem"]
-	p.RequestPayload.Username = parserData["username"]
+	p.RequestPayload.Username = parserData["userName"]
 	p.RequestPayload.Password = parserData["password"]
-
 	log.Println("Декодированный JSON:", p.RequestPayload)
+	err = p.VerificationParser()
+	if err != nil {
+		log.Println("Ошибка валидации:", err)
+		return fmt.Errorf("ошибка валидации: %v", err)
+	}
 
 	return nil
 }

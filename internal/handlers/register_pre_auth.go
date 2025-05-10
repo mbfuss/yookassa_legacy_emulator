@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"yookassa_legacy_emulator/internal/business/utils"
+	"yookassa_legacy_emulator/internal/resource"
 )
 
 // RegisterPreAuth - обработчик маршрута /payment/rest/registerPreAuth.do.
@@ -15,15 +16,15 @@ func (h *Handler) RegisterPreAuth(res http.ResponseWriter, req *http.Request) {
 	}
 	err := h.pr.Parse(req)
 	if err != nil {
-		http.Error(res, "Ошибка при разборе данных", http.StatusBadRequest)
+		http.Error(res, "Ошибка при разборе данных: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	orderID := utils.GenerateOrderID()
 	formUrl := h.url + payments + "?orderId=" + orderID
-	reqData := map[string]string{
-		"orderId": orderID,
-		"formUrl": formUrl,
+	reqData := resource.ResponsePayload{
+		OrderId: orderID,
+		FormUrl: formUrl,
 	}
 	res.Header().Set("Content-Type", "application/json")
 	res.WriteHeader(http.StatusOK)

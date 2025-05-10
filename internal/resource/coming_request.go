@@ -2,35 +2,39 @@ package resource
 
 // RequestPayload - структура для обработки входящих запросов поступающих серверу от клиента.
 type RequestPayload struct {
-	OrderNumber string `json:"orderNumber"`
-	Amount      string `json:"amount"`
-	ReturnUrl   string `json:"returnUrl"`
-	FailUrl     string `json:"failUrl"`
-	Email       string `json:"email"`
-	Phone       string `json:"phone"`
-	JsonParams  struct {
-		Email string `json:"email"`
+	Username    string `json:"userName"`    // Идентификатор магазина, который вы получили в личном кабинете ЮKassa (поле shopId). Обязательный параметр.
+	Password    string `json:"password"`    // Секретный ключ магазина, который вы получили в личном кабинете ЮKassa. Обязательный параметр.
+	OrderNumber string `json:"orderNumber"` // Уникальный идентификатор заказа в вашей системе. Обязательный параметр.
+	Amount      string `json:"amount"`      // Сумма регистрации заказа в минимальных единицах. Обязательный параметр.
+	ReturnUrl   string `json:"returnUrl"`   // Адрес, на который ЮKassa перенаправит пользователя при успешной оплате. Обязательный параметр
+	FailUrl     string `json:"failUrl"`     // Адрес, на который ЮKassa перенаправит пользователя при неуспешной оплате. Обязательный параметр.
+	Email       string `json:"email"`       // Адрес электронной почты пользователя. Необязательный параметр.
+	Phone       string `json:"phone"`       // Номер телефона клиента без лидирующей «7». Пример: 9XXXXXXXXX. Необязательный параметр.
+
+	JsonParams struct { // Любые дополнительные данные, которые нужны вам для работы. Передаются в виде набора пар «ключ - значение».
+		Email string `json:"email"` // Для проведения платежа не используются. Необязательный параметр.
 		Phone string `json:"phone"`
 	}
-	CustomerDetails struct {
-		Email    *string `json:"email"`
-		Phone    string  `json:"phone"`
-		FullName string  `json:"fullName"`
+
+	CustomerDetails struct { // Данные о пользователе. Необходимо указать как минимум контактные данные — электронную почту (email) или номер телефона (phone). Обязательный параметр
+		Email    string `json:"email"`    // Электронная почта пользователя, на которую будет отправлен чек. Обязательный параметр, если не передан phone.
+		Phone    string `json:"phone"`    // Номер телефона пользователя. Указывается в формате ITU-T E.164, например 79000000000 Обязательный параметр, если не передан email.
+		FullName string `json:"fullName"` // Для юрлица — название организации, для ИП и физического лица — ФИО. Необязательный параметр.
 	} `json:"customerDetails"`
 
-	CartItems struct {
-		Items []struct {
-			PositionId int    `json:"positionId"`
-			Name       string `json:"name"`
-			Quantity   struct {
-				Value   interface{} `json:"value"`
-				Measure string      `json:"measure"`
+	CartItems struct { // Список товаров в заказе. Не более 100 товарных позиций. Обязательный параметр.
+		Items []struct { // Массив items содержит объекты items с описанием данных о товаре.
+			PositionId int      `json:"positionId"` // Параметр, который не поддерживается. Необязательный параметр.
+			Name       string   `json:"name"`       // Название товара в свободной форме. Обязательный параметр.
+			Quantity   struct { // Общее количество товара и меру количества товара. Обязательный параметр
+				Value   interface{} `json:"value"`   // Количество товара. Обязательный параметр
+				Measure string      `json:"measure"` // Мера количества товара. Обязательный параметр,
 			} `json:"quantity"`
-			Tax struct {
-				TaxType int `json:"taxType"`
+			Tax struct { // Сведения о налоге. Обязательный параметр.
+				TaxType int `json:"taxType"` // Тип налога. Обязательный параметр.
 			} `json:"tax"`
-			ItemPrice      int `json:"itemPrice"`
-			ItemAttributes struct {
+			ItemPrice      int      `json:"itemPrice"` // Цена товара в минимальных единицах. Обязательный параметр.
+			ItemAttributes struct { // Атрибуты товара. Обязательные параметры.
 				Attributes []struct {
 					Name  string `json:"name"`
 					Value string `json:"value"`
@@ -38,7 +42,6 @@ type RequestPayload struct {
 			} `json:"itemAttributes"`
 		} `json:"items"`
 	} `json:"cartItems"`
-	TaxSystem string `json:"taxSystem"`
-	Username  string `json:"username"`
-	Password  string `json:"password"`
+
+	TaxSystem string `json:"taxSystem"` // Система налогообложения магазина. Обязательный параметр, если отправляете данные для чеков через ЮKassa и используете онлайн-кассу, обновленную до ФФД 1.2.
 }
