@@ -57,7 +57,7 @@
   "password": "QWERTY123",
   "orderNumber": "12345",
   "amount": "1000",
-  "returnUrl": "http://example.com/success",
+  "returnUrl": "http://localhost:8080/payment/rest/payments",
   "failUrl": "http://example.com/fail",
   "email": "null",
   "phone": "91234567890",
