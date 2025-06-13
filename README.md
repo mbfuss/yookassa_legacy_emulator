@@ -34,7 +34,7 @@
    ```
 3. **Запустите сервер:**
    ```bash
-   go run main.go
+   go run cmd/http_server/main.go
    ```
 
 ## Основные маршруты
@@ -57,7 +57,7 @@
   "password": "QWERTY123",
   "orderNumber": "12345",
   "amount": "1000",
-  "returnUrl": "http://localhost:8080/payment/rest/payments",
+  "returnUrl": "http://example.com/succes",
   "failUrl": "http://example.com/fail",
   "email": "null",
   "phone": "91234567890",
@@ -70,7 +70,7 @@
 ```json
 {
   "orderId": "550e8400-e29b-41d4-a716-446655440000",
-  "formUrl": "http://localhost:8080/payment/rest/payments?orderId=550e8400-e29b-41d4-a716-446655440000"
+  "formUrl": "http://example.com/succes?orderId=550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 C устаревшим API ЮKassa возможно ознакомиться по ссылке:
